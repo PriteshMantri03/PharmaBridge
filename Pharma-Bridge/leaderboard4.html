@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharma Bridge - Leaderboard</title>
+    <style>
+        /* :root {
+            --primary-color: #2563eb;
+            --light-bg: #f4f4f4;
+            --white: #fff;
+            --black: #333;
+        } */
+ 
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--light-bg);
+            margin: 0;
+            padding: 0;
+        }
+        #donors {
+            background-color: #2563eb;
+            margin-top: -0px;
+        }
+        /* Leaderboard Section */
+        .leaderboard {
+            padding: 4rem 5%;
+            text-align: center;
+        }
+        .leaderboard h2 {
+            font-size: 2.8rem;
+            margin-bottom: 2rem;
+            color: var(--white);
+            background: var(--primary-color);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        /* Search Bar */
+        .search-bar {
+            width: 60%;
+            padding: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        /* Leaderboard Table */
+        .leaderboard-container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .leaderboard-list {
+            width: 100%;
+            max-width: 900px;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .leaderboard-list th {
+            background: var(--primary-color);
+            color: var(--white);
+            font-size: 1.2rem;
+            padding: 1rem;
+            text-align: left;
+            cursor: pointer;
+        }
+        .leaderboard-list th:hover {
+            background: #1e4bb3;
+        }
+        .leaderboard-list td {
+            padding: 1rem;
+            font-size: 1.1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--light-bg);
+        }
+        /* Highlight Top 3 */
+        .top-three:nth-child(1) { background: rgba(255, 215, 0, 0.2); }
+        .top-three:nth-child(2) { background: rgba(192, 192, 192, 0.2); }
+        .top-three:nth-child(3) { background: rgba(205, 127, 50, 0.2); }
+        .leaderboard-list tbody tr:hover {
+            background: rgba(37, 99, 235, 0.08);
+            transition: 0.3s ease-in-out;
+        }
+        .company {
+            display: flex;
+            align-items: center;
+        }
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <section id="leaderboard" class="leaderboard">
+    <div style="margin-top: -40px;">
+        <a href="index4.html" style="position: relative; right: 600px; margin-top: -80px; color: white; text-decoration: none;"><p>← Back</p></a>
+        <h2 id="donors" style="color: white; margin-top: -65px;">TOP DONORS</h2>
+    </div>
+        <input type="text" id="search" class="search-bar" placeholder="Search for a company...">
+        <div class="leaderboard-container">
+            <table class="leaderboard-list">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">Rank</th>
+                        <th onclick="sortTable(1)">Company</th>
+                        <th onclick="sortTable(2)">Donations</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <tr class="top-three">
+                        <td>🥇 1</td>
+                        <td class="company"> Sun Pharma</td>
+                        <td>10,000+</td>
+                    </tr>
+                    <tr class="top-three">
+                        <td>🥈 2</td>
+                        <td class="company"> Dr Reddys Labs</td>
+                        <td>8,500+</td>
+                    </tr>
+                    <tr class="top-three">
+                        <td>🥉 3</td>
+                        <td class="company"> Cipla</td>
+                        <td>7,000+</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="company"> Lupin</td>
+                        <td>6,500+</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="company"> Aurobindo Pharma</td>
+                        <td>6,000+</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="company"> Torrent Pharma</td>
+                        <td>5,500+</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="company"> Zydus Cadila</td>
+                        <td>5,000+</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="company"> Glenmark</td>
+                        <td>4,500+</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td class="company"> Biocon</td>
+                        <td>4,000+</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td class="company"> Cadila Healthcare</td>
+                        <td>3,500+</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('search').addEventListener('input', function() {
+            let filter = this.value.toUpperCase();
+            let rows = document.querySelectorAll("#leaderboard-body tr");
+            rows.forEach(row => {
+                let company = row.cells[1].textContent || row.cells[1].innerText;
+                row.style.display = company.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+            });
+        });
+
+        function sortTable(n) {
+            let table = document.querySelector(".leaderboard-list tbody");
+            let rows = Array.from(table.rows);
+            let sortedRows = rows.sort((a, b) => {
+                let valA = a.cells[n].textContent.trim().replace(/[^0-9]/g, "");
+                let valB = b.cells[n].textContent.trim().replace(/[^0-9]/g, "");
+                return Number(valB) - Number(valA);
+            });
+            table.innerHTML = "";
+            sortedRows.forEach(row => table.appendChild(row));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Requests - Pharma Bridge</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --completed-color: #22c55e;
+            --pending-color: #f59e0b;
+            --processing-color: #3b82f6;
+            --cancelled-color: #ef4444;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+        }
+
+        .navbar {
+            background: var(--card-background);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .tracking-header {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .search-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .search-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-button:hover {
+            background: var(--secondary-color);
+        }
+
+        .request-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .request-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .request-id {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .request-date {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .status-completed { background: var(--completed-color); }
+        .status-pending { background: var(--pending-color); }
+        .status-processing { background: var(--processing-color); }
+        .status-cancelled { background: var(--cancelled-color); }
+
+        .tracking-timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding-left: 2rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: var(--primary-color);
+            z-index: 1;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -1.6rem;
+            top: 1rem;
+            width: 2px;
+            height: 100%;
+            background: #e2e8f0;
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .timeline-title {
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .medicine-list {
+            margin-top: 1rem;
+        }
+
+        .medicine-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .medicine-item:last-child {
+            border-bottom: none;
+        }
+
+        .medicine-name {
+            font-weight: 500;
+        }
+
+        .medicine-details {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .temperature-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .cold { background: #dbeafe; color: #1e40af; }
+        .room { background: #dcfce7; color: #166534; }
+        .cool { background: #f3e8ff; color: #6b21a8; }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .search-section {
+                flex-direction: column;
+            }
+
+            .request-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="images/logo.png" alt="Pharma Bridge Logo">
+            <span>Pharma Bridge</span>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="request.html">Request Medicines</a>
+            <a href="tracking.html" class="active">Track Requests</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="tracking-header">
+            <h2>Track Your Requests</h2>
+            <div class="search-section">
+                <input type="text" class="search-input" id="requestSearch" placeholder="Enter Request ID or Medicine Name">
+                <button class="search-button" onclick="searchRequests()">
+                    <i class="fas fa-search"></i>
+                    Track
+                </button>
+            </div>
+        </div>
+
+        <div class="request-list" id="requestList">
+            <!-- Request cards will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script src="tracking.js"></script>
+</body>
+</html>

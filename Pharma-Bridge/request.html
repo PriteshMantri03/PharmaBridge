@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Medicines</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --light-bg: #f4f4f4;
+            --white: #fff;
+            --black: #333;
+            --success: #28a745;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--light-bg);
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 5%;
+        }
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        .back-button {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        .request-container {
+            padding: 3rem 5%;
+            text-align: center;
+        }
+        .request-form {
+            max-width: 600px;
+            margin: auto;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        .request-form label {
+            font-weight: 500;
+            display: block;
+            margin-top: 1rem;
+        }
+        .request-form input, .request-form select {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .request-form button {
+            margin-top: 1rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .checkout-btn {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--success);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .stock-list, #cart-list {
+            list-style: none;
+            padding: 0;
+        }
+        .stock-list li, #cart-list li {
+            background: var(--light-bg);
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            text-align: left;
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index4.html" class="back-button">← Back</a>
+        <h1>Request Medicines</h1>
+    </nav>
+    
+    <section class="request-container">
+        <h2>Available Medicines</h2>
+        <form class="request-form">
+            <label for="medicine-type">Select Medicine Type:</label>
+            <select id="medicine-type">
+                <option value="antibiotics">Antibiotics</option>
+                <option value="painkillers">Painkillers</option>
+                <option value="vitamins">Vitamins</option>
+                <option value="antiseptics">Antiseptics</option>
+            </select>
+            <label for="stock-availability">Check Availability:</label>
+            <input type="text" id="stock-availability" placeholder="Enter medicine name">
+            <h3>Available Stock</h3>
+            <ul class="stock-list">
+                <li>Paracetamol - 100 packs</li>
+                <li>Amoxicillin - 50 bottles</li>
+                <li>Vitamin C - 200 tablets</li>
+            </ul>
+            <label for="quantity">Enter Quantity:</label>
+            <input type="number" id="quantity" min="1" placeholder="Enter quantity">
+            <button type="button" onclick="addToCart()">Add to Cart</button>
+        </form>
+        <h3>Requested Checklist</h3>
+        <ul id="cart-list"></ul>
+        <button class="checkout-btn">Proceed to Checkout</button>
+    </section>
+    <script>
+        function addToCart() {
+            let medicineType = document.getElementById("medicine-type").value;
+            let quantity = parseInt(document.getElementById("quantity").value, 10);
+            let availableStock = {
+                "antibiotics": 50,
+                "painkillers": 100,
+                "vitamins": 200,
+                "antiseptics": 30
+            };
+            if (!quantity || quantity <= 0) {
+                alert("Please enter a valid quantity.");
+                return;
+            }
+            if (quantity > availableStock[medicineType]) {
+                alert("Not enough stock available. Please reduce quantity.");
+                return;
+            }
+            let cartList = document.getElementById("cart-list");
+            let listItem = document.createElement("li");
+            listItem.textContent = `${medicineType} - ${quantity} units`;
+            cartList.appendChild(listItem);
+            alert("Added to cart!");
+        }
+    </script>
+</body>
+</html>

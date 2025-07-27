@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Medicines - Pharma Bridge</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+        }
+
+        .navbar {
+            background: var(--card-background);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .donation-form-section {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .donation-history {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .medicine-list {
+            margin-top: 2rem;
+        }
+
+        .medicine-entry {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .medicine-entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .remove-medicine {
+            color: var(--danger-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .add-medicine-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            margin-bottom: 2rem;
+        }
+
+        .add-medicine-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .submit-donation {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+            margin-top: 2rem;
+        }
+
+        .submit-donation:hover {
+            background: #16a34a;
+        }
+
+        .verification-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .verification-upload {
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .verification-upload:hover {
+            border-color: var(--primary-color);
+            background: #f8fafc;
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .donation-history-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .donation-history-item:last-child {
+            border-bottom: none;
+        }
+
+        .donation-id {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .donation-date {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .donation-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .status-verified {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .temperature-control {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .temperature-option {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .temperature-option.selected {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .temperature-control {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="images/logo.png" alt="Pharma Bridge Logo">
+            <span>Pharma Bridge</span>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="donate.html" class="active">Donate</a>
+            <a href="tracking.html">Track</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="donation-form-section">
+            <h2>Donate Medicines</h2>
+            <p>Please provide accurate information about the medicines you wish to donate.</p>
+
+            <form id="donationForm">
+                <div class="form-group">
+                    <label class="form-label">Company Information</label>
+                    <input type="text" class="form-input" id="companyName" placeholder="Company Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">License Number</label>
+                    <input type="text" class="form-input" id="licenseNumber" placeholder="Company License Number" required>
+                </div>
+
+                <button type="button" class="add-medicine-btn" onclick="addMedicineEntry()">
+                    <i class="fas fa-plus"></i> Add Medicine
+                </button>
+
+                <div id="medicineList" class="medicine-list">
+                    <!-- Medicine entries will be added here -->
+                </div>
+
+                <div class="verification-section">
+                    <h3>Verification Documents</h3>
+                    <p>Please upload necessary documents to verify the authenticity of medicines</p>
+                    
+                    <div class="verification-upload" onclick="document.getElementById('documentUpload').click()">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p>Click to upload verification documents</p>
+                        <p class="text-sm text-gray-500">(Drug License, Quality Certificates, etc.)</p>
+                        <input type="file" id="documentUpload" multiple style="display: none">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-donation">
+                    <i class="fas fa-hand-holding-medical"></i>
+                    Submit Donation
+                </button>
+            </form>
+        </div>
+
+        <div class="donation-history">
+            <h2>Your Donation History</h2>
+            <div id="donationHistoryList">
+                <!-- Donation history will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/donate.js"></script>
+</body>
+</html> 
